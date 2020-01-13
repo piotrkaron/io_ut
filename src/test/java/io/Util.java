@@ -1,4 +1,8 @@
-package io.entity;
+package io;
+
+import io.entity.NewRentObject;
+import io.entity.Product;
+import io.entity.RentList;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
@@ -11,15 +15,15 @@ public class Util {
     public final static BigDecimal BAIL = BigDecimal.TEN;
     public final static int PRODUCT_ID = 1234;
 
-    public static Product dummyProduct(String name) {
-        return new Product(name, PRICE, BAIL, PRODUCT_ID);
+    public static Product dummyProduct(int id) {
+        return new Product(PRODUCT_NAME, PRICE, BAIL, id);
     }
 
     public static NewRentObject dummyRentObject(Product product) {
         return new NewRentObject(product, 1);
     }
 
-    public static RentList rentListWithThreeProducts(String name1, String name2, String name3) {
+    public static RentList rentListWithThreeProducts(int name1, int name2, int name3) {
         RentList list = new RentList(OWNER_ID);
         HashSet<NewRentObject> set = new HashSet<>();
         NewRentObject a1 = dummyRentObject(dummyProduct(name1));
@@ -34,4 +38,5 @@ public class Util {
 
         return list;
     }
+
 }

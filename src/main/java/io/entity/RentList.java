@@ -36,23 +36,7 @@ public class RentList {
         } else {
             NewRentObject obj = newRentObjectOpt.get();
             obj.addQuantity(quantity);
-            update(obj);
         }
-    }
-
-    private Optional<NewRentObject> find(Product product) {
-        return products.stream()
-                .filter(newRentObject -> newRentObject.getProduct().equals(product))
-                .findAny();
-    }
-
-    private void addNew(NewRentObject obj) {
-        products.add(obj);
-    }
-
-    private void update(NewRentObject obj) {
-        products.remove(obj);
-        products.add(obj);
     }
 
     public String getId() {
@@ -114,4 +98,15 @@ public class RentList {
     public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
     }
+
+    public Optional<NewRentObject> find(Product product) {
+        return products.stream()
+                .filter(newRentObject -> newRentObject.getProduct().equals(product))
+                .findAny();
+    }
+
+    private void addNew(NewRentObject obj) {
+        products.add(obj);
+    }
+
 }

@@ -26,4 +26,9 @@ public enum UserRepositoryImpl implements UserRepository {
         users.add(user);
         return user;
     }
+
+    @Override
+    public void deleteAll() {
+        this.users.clear();
+    }
 }

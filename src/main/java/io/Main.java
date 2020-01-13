@@ -1,6 +1,10 @@
 package io;
 
 import io.entity.Product;
+import io.repository.ProductRepositoryImpl;
+import io.repository.RentListRepositoryImpl;
+import io.repository.UserRepository;
+import io.repository.UserRepositoryImpl;
 
 import java.util.Map;
 import java.util.Scanner;
@@ -9,7 +13,11 @@ public class Main {
 
     private static Scanner scan = new Scanner(System.in);
 
-    private static RentApp app = RentApp.INSTANCE;
+    private static RentApp app = new RentApp(
+            ProductRepositoryImpl.INSTANCE,
+            UserRepositoryImpl.INSTANCE,
+            RentListRepositoryImpl.INSTANCE
+    );
 
     public static void main(String[] args) {
         app.populateExampleData();

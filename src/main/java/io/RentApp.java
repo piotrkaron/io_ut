@@ -4,34 +4,42 @@ import io.entity.Address;
 import io.entity.Product;
 import io.entity.RentList;
 import io.entity.User;
-import io.repository.*;
+import io.repository.ProductRepository;
+import io.repository.RentListRepository;
+import io.repository.UserRepository;
 
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Optional;
 
-public enum RentApp {
+public class RentApp {
 
-    INSTANCE;
-
+    private ProductRepository productRepository;
+    private UserRepository userRepository;
+    private RentListRepository rentListRepository;
     private User currentUser;
-
-    private ProductRepository productRepository = ProductRepositoryImpl.INSTANCE;
-    private UserRepository userRepository = UserRepositoryImpl.INSTANCE;
-    private RentListRepository rentListRepository = RentListRepositoryImpl.INSTANCE;
-
     private RentList currentRentList = null;
 
-    public boolean login(String password, String email){
+    public RentApp(
+            ProductRepository productRepository,
+            UserRepository userRepository,
+            RentListRepository rentListRepository) {
+
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+        this.rentListRepository = rentListRepository;
+    }
+
+    public boolean login(String password, String email) {
         Optional<User> opt = userRepository.findUserByEmail(email);
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             showError("Bledne dane");
             return false;
         }
 
         User user = opt.get();
 
-        if(!isPasswordCorrect(password, user)){
+        if (!isPasswordCorrect(password, user)) {
             showError("Bledne dane");
             return false;
         }
@@ -41,23 +49,23 @@ public enum RentApp {
         return true;
     }
 
-    public Map<Product, Integer> getCatalogue(){
+    public Map<Product, Integer> getCatalogue() {
         return productRepository.findAllAvailableProducts();
     }
 
-    public boolean reserveProduct(int productId, int quantity){
-        if(currentUser == null) {
+    public boolean reserveProduct(int productId, int quantity) {
+        if (currentUser == null) {
             showError("Nie zalogowano.");
             return false;
         }
 
         Optional<Map.Entry<Product, Integer>> prodOpt = productRepository.findById(productId);
-        if(!prodOpt.isPresent() || prodOpt.get().getValue() < quantity){
+        if (prodOpt.isEmpty() || prodOpt.get().getValue() < quantity) {
             showError("Brak produktu lub zly kod (id)");
             return false;
         }
 
-        if(currentRentList == null) {
+        if (currentRentList == null) {
             currentRentList = new RentList(currentUser.getId());
             currentRentList = rentListRepository.save(currentRentList);
         }
@@ -68,37 +76,38 @@ public enum RentApp {
     }
 
     public void showRentList() {
-        if(currentRentList == null){
+        if (currentRentList == null) {
             showError("Brak listy");
-        }else{
+        } else {
             System.out.println(currentRentList.toString());
         }
     }
 
-    private String encode(String password){
+    private String encode(String password) {
         char[] chars = password.toCharArray();
         char[] newPwd = new char[chars.length];
         int i = 0;
-        for(char ch: chars){
+        for (char ch : chars) {
             newPwd[i++] = (char) (ch + 4);
         }
 
         return String.valueOf(newPwd);
     }
 
-    private boolean isPasswordCorrect(String password, User user){
-        return encode(password).equals(user.getPassword());
+    private boolean isPasswordCorrect(String password, User user) {
+        return encode(password).trim().toLowerCase()
+                .equals(user.getPassword().trim().toLowerCase());
     }
 
-    private void setupSession(User user){
+    private void setupSession(User user) {
         currentUser = user;
     }
 
-    private void redirectToMainPage(){
+    private void redirectToMainPage() {
         System.out.println("Powrot na strone glowna");
     }
 
-    private void showError(String error){
+    private void showError(String error) {
         System.out.println(error);
     }
 
@@ -111,7 +120,7 @@ public enum RentApp {
         Product p1 = new Product("Latarka", BigDecimal.TEN, BigDecimal.TEN, 0);
         productRepository.save(p1, 123);
 
-        Product p2 = new Product("Mlot", BigDecimal.valueOf(25.5) , BigDecimal.TEN, 0);
+        Product p2 = new Product("Mlot", BigDecimal.valueOf(25.5), BigDecimal.TEN, 0);
         productRepository.save(p2, 1);
 
         Product p3 = new Product("Lina", BigDecimal.valueOf(25.5), BigDecimal.TEN, 0);

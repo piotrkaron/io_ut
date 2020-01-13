@@ -1,4 +1,4 @@
-package io.entity;
+package io;
 
 public interface TestEntity {
 }

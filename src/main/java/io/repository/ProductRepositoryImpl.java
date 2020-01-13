@@ -56,4 +56,9 @@ public enum ProductRepositoryImpl implements ProductRepository {
                 .map(Map.Entry::getValue)
                 .orElse(0);
     }
+
+    @Override
+    public void deleteAll() {
+        this.products.clear();
+    }
 }

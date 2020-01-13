@@ -18,4 +18,6 @@ public interface ProductRepository {
     Optional<Map.Entry<Product, Integer>> findById(int productId);
 
     int quantityOf(Product product);
+
+    void deleteAll();
 }

@@ -21,4 +21,9 @@ public enum RentListRepositoryImpl implements RentListRepository {
         rentLists.add(entity);
         return entity;
     }
+
+    @Override
+    public void deleteAll() {
+        this.rentLists.clear();
+    }
 }

@@ -6,4 +6,5 @@ public interface RentListRepository {
 
     RentList save(RentList entity);
 
+    void deleteAll();
 }
