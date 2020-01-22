@@ -1,0 +1,8 @@
+---
+Suite
+Test: no
+---
+!1 Test suite X
+!contents -R2 -g -p -f -h
+
+!path /home/piotrek/studia/5_sem/io/projekt2_accept_test/build/classes/java/main/io
